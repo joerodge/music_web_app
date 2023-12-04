@@ -4,11 +4,11 @@ from lib.database_connection import DatabaseConnection
 from lib.album import Album
 from lib.album_repository import AlbumRepository
 from lib.database_connection import get_flask_database_connection
+from lib.artist import Artist
+from lib.artist_repository import ArtistRepository
 
 # Create a new Flask app
 app = Flask(__name__)
-
-
 
 # GET /emoji
 # Returns a emojiy face
@@ -34,6 +34,23 @@ def get_albums():
     album_repo = AlbumRepository(connection)
     albums = album_repo.all()
     return '\n'.join(str(album) for album in albums)
+
+@app.route('/artists', methods = ['GET'])
+def get_artists():
+    connection = get_flask_database_connection(app)
+    repo = ArtistRepository(connection)
+    artists = repo.all()
+    name_list = [artist.name for artist in artists]
+    return ', '.join(name_list)
+
+@app.route('/artists', methods = ['POST'])
+def create_artist():
+    connection = get_flask_database_connection(app)
+    repo = ArtistRepository(connection)
+    artist = Artist(None, request.form['name'], request.form['genre'])
+    repo.create(artist)
+    return 'Artist added'
+
 
 # This imports some more example routes for you to see how they work
 # You can delete these lines if you don't need them.

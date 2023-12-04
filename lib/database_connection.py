@@ -11,8 +11,8 @@ from psycopg.rows import dict_row
 # That's why we have provided it!
 class DatabaseConnection:
     # VVV CHANGE BOTH OF THESE VVV
-    DEV_DATABASE_NAME = "music_web_app"
-    TEST_DATABASE_NAME = "music_web_app_test"
+    DEV_DATABASE_NAME = "music_library"
+    TEST_DATABASE_NAME = "music_library_test"
 
     def __init__(self, test_mode=False):
         self.test_mode = test_mode

@@ -57,3 +57,16 @@ def test_create_a_new_album_assert_with_GET(web_client, db_connection):
         "Album(13, Voyage, 2022, 2)",
     ])
 
+def test_artist_get(web_client, db_connection):
+    db_connection.seed('seeds/music.sql')
+    response = web_client.get('/artists')
+    assert response.status == '200 OK'
+    assert response.data.decode('utf-8') == 'Pixies, ABBA, Taylor Swift, Nina Simone'
+
+def test_add_artist(web_client, db_connection):
+    db_connection.seed('seeds/music.sql')
+    response = web_client.post('/artists', data = {'name': 'Wild nothing', 'genre': 'Indie'})
+    assert response.status == '200 OK'
+    response = web_client.get('/artists')
+    assert response.status == '200 OK'
+    assert response.data.decode('utf-8') == 'Pixies, ABBA, Taylor Swift, Nina Simone, Wild nothing'
